@@ -22,6 +22,51 @@ export const HeaderStyled = styled.header`
   }
 `;
 
+export const InputBodyStyled = styled.main`
+  margin-top: 8rem;
+  padding: 0 4rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  input {
+    width: 30rem;
+    height: 3rem;
+
+    font-size: 1rem;
+
+    margin-bottom: 2rem;
+
+    border: none;
+    border-bottom: 0.08rem solid rgba(0, 0, 0, 0.5);
+
+    &:focus {
+      outline: none;
+      border-bottom: 0.2rem solid rgba(8, 112, 41, 1);
+    }
+  }
+
+  button {
+    margin-top: 3rem;
+
+    width: 13rem;
+    height: 3rem;
+
+    border: none;
+    border-radius: 2rem;
+
+    cursor: pointer;
+
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5rem;
+
+    background-color: rgb(41 183 85);
+  }
+`;
+
 export const BodyStyled = styled.main`
   margin-top: 8rem;
   width: 100%;
@@ -32,32 +77,44 @@ export const BodyStyled = styled.main`
   grid-auto-rows: 10rem;
   gap: 1.2rem;
   justify-content: center;
+
+  article.checked__word {
+    background-color: rgba(8, 112, 41, 0.3);
+  }
 `;
 
 export const WordContainerDivStyled = styled.article`
   padding: 1.3rem;
   position: relative;
+
+  border: 3px solid rgba(8, 112, 41, 0.3);
+  border-radius: 0.5rem;
+
+  button {
+    border: none;
+    background: inherit;
+    margin-right: 0.1rem;
+  }
+
   div {
     display: flex;
     align-items: center;
   }
-
   div:first-child {
     position: absolute;
     right: 1rem;
     top: 1rem;
   }
-
   div:nth-child(2) {
+    display: block;
     p {
       margin-right: 0.3rem;
     }
   }
 
   p {
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.2rem;
   }
-
   p.word {
     font-size: 2rem;
   }
