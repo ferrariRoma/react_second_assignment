@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // 컴포넌트
 import WordBox from "./WordBoxComponent";
@@ -8,12 +8,21 @@ import { HeaderStyled, BodyStyled } from "./styleComponent";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 // db
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+//
+import { FBActionFn } from "./redux/modules/reduxWord";
+import { collection, getDocs } from "firebase/firestore/lite";
+import { db } from "./firebase";
 
 const Home = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const initWordData = useSelector((state) => state.reducer);
 
+  React.useEffect(() => {
+    console.log("FB 접근 시작합니다.");
+    dispatch(FBActionFn());
+  });
   return (
     <>
       <HeaderStyled>

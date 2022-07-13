@@ -1,6 +1,6 @@
-// initData(temporary)
-
-import { useSelector } from "react-redux";
+// firebase config
+import { db } from "../../firebase";
+import { collection, getDocs } from "@firebase/firestore";
 
 // 0: word, 1: pronunciation, 2: meaning, 3: eg, 4: trasition, 5: checked, 6: id
 export const initWordData = [
@@ -47,6 +47,7 @@ const CREATE = "word/CREATE";
 const READ = "word/READ";
 const UPDATE = "word/UPDATE";
 const DELETE = "word/DELETE";
+const LOAD_FIRESTORE_DATA = "word/READ_DATA";
 
 const wordReducer = (state = initWordData, action = {}) => {
   switch (action.type) {
@@ -58,11 +59,19 @@ const wordReducer = (state = initWordData, action = {}) => {
     }
     case UPDATE: {
       console.log("UPDATE 리듀서 스위치 케이스 입니다.");
-      state.indexOf(action);
-      return state;
+      const index = state.indexOf(action);
+      state(index);
+      return {};
     }
     case DELETE: {
       return console.log("DELETE 리듀서 스위치 케이스 입니다.");
+    }
+    case LOAD_FIRESTORE_DATA: {
+      console.log(state, action);
+
+      return console.log(
+        "파이어스토어에서 데이터를 읽어온 뒤 리듀서 안 입니다."
+      );
     }
     default:
       return state;
@@ -82,6 +91,22 @@ export const actionUpdateFn = (action) => {
 };
 export const actionDeleteFn = () => {
   return console.log("actionDelete 입니다. 리듀서로 무엇을 보낼까요?");
+};
+// firestore action function
+export const loadDataFn = (firestoreData) => {
+  console.log("떵크에서 저를 호출했어요!");
+  console.log(firestoreData);
+  return { type: LOAD_FIRESTORE_DATA, firestoreData };
+};
+
+// set firestore middleware thunk
+export const FBActionFn = () => {
+  return async function (dispatch) {
+    console.log("파이어스토어에 접근하겠습니다.");
+    const dictionaryData = await getDocs(collection(db, "dictionary"));
+    dictionaryData.forEach((el) => console.log(el.data()));
+    dispatch(loadDataFn(dictionaryData));
+  };
 };
 
 export default wordReducer;
