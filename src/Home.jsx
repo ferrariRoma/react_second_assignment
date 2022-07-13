@@ -11,8 +11,6 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch, useSelector } from "react-redux";
 //
 import { FBActionFn } from "./redux/modules/reduxWord";
-import { collection, getDocs } from "firebase/firestore/lite";
-import { db } from "./firebase";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -20,9 +18,9 @@ const Home = () => {
   const initWordData = useSelector((state) => state.reducer);
 
   React.useEffect(() => {
-    console.log("FB 접근 시작합니다.");
+    // FB에서 데이터 가져와서 reducer state초기화
     dispatch(FBActionFn());
-  });
+  }, []);
   return (
     <>
       <HeaderStyled>
@@ -30,7 +28,7 @@ const Home = () => {
       </HeaderStyled>
       <BodyStyled>
         {initWordData.map((el, i) => (
-          <WordBox initWordData={el} key={el[0] + i} />
+          <WordBox initWordData={el} key={Date.now() + Math.random() * 100} />
         ))}
       </BodyStyled>
       <div>

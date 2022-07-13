@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { HeaderStyled, InputBodyStyled } from "./styleComponent";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { actionUpdateFn } from "./redux/modules/reduxWord";
+import { FBActionUpdateFn } from "./redux/modules/reduxWord";
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -18,9 +18,6 @@ const Edit = () => {
   const egRefInput = useRef(false);
   const translationRefInput = useRef(false);
 
-  // 입력 필드가 다 채워지면 state변경
-  const [isWritten, setIsWritten] = useState(false);
-
   // 입력 필드가 비었을 때 경고, 아니면 홈으로 보내기(나중에는 ADD액션함수 호출을 더할 예정)
   const btnOnClick = () => {
     if (
@@ -33,19 +30,17 @@ const Edit = () => {
       )
     ) {
       const createData = {
-        0: wordRefInput.current.value,
-        1: pronunciationRefInput.current.value,
-        2: meaningRefInput.current.value,
-        3: egRefInput.current.value,
-        4: translationRefInput.current.value,
-        5: wordData.id,
+        word: wordRefInput.current.value,
+        pronun: pronunciationRefInput.current.value,
+        meaning: meaningRefInput.current.value,
+        eg: egRefInput.current.value,
+        translate: translationRefInput.current.value,
+        id: wordData.id,
       };
-      dispatch(actionUpdateFn(createData));
-      setIsWritten(true);
+      dispatch(FBActionUpdateFn(createData));
 
       return navigate("/");
     } else {
-      setIsWritten(false);
       return alert("입력 칸을 모두 채우세요.");
     }
   };
@@ -61,39 +56,39 @@ const Edit = () => {
           placeholder="단어"
           ref={wordRefInput}
           name="word"
-          defaultValue={wordData[0]}
+          defaultValue={wordData.word}
         />
         <input
           type="text"
           placeholder="발음"
           ref={pronunciationRefInput}
           name="pronunciation"
-          defaultValue={wordData[1]}
+          defaultValue={wordData.pronun}
         />
         <input
           type="text"
           placeholder="뜻"
           ref={meaningRefInput}
           name="meaning"
-          defaultValue={wordData[2]}
+          defaultValue={wordData.meaning}
         />
         <input
           type="text"
           placeholder="예문"
           ref={egRefInput}
           name="eg"
-          defaultValue={wordData[3]}
+          defaultValue={wordData.eg}
         />
         <input
           type="text"
           placeholder="예문해석"
           ref={translationRefInput}
           name="translation"
-          defaultValue={wordData[4]}
+          defaultValue={wordData.translate}
         />
 
         <button type="submit" onClick={btnOnClick}>
-          등록하기
+          수정하기
         </button>
       </InputBodyStyled>
     </>

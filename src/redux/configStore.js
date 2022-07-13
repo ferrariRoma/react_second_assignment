@@ -14,6 +14,16 @@ const middlewares = [thunk];
 const enhancer = applyMiddleware(...middlewares);
 
 // rootReducer + enhancer = store생성
-const Store = configureStore({ reducer: rootReducer }, enhancer);
+const Store = configureStore(
+  {
+    reducer: rootReducer,
+    // react_devtools_backend.js:4026 A non-serializable value was detected in an action, in the path: `firestoreData`. 에러 해결
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+  },
+  enhancer
+);
 
 export default Store;
