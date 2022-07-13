@@ -7,30 +7,26 @@ import { HeaderStyled, BodyStyled } from "./styleComponent";
 // material Icon
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-/* 
-data List
-
-단어
-발음
-뜻
-예문
-예문해석
-Check여부
-*/
+// db
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  const nav = useNavigate();
+  const navigate = useNavigate();
+  const initWordData = useSelector((state) => state.reducer);
+
   return (
     <>
       <HeaderStyled>
         <h1>영어 단어장</h1>
       </HeaderStyled>
       <BodyStyled>
-        <WordBox />
+        {initWordData.map((el, i) => (
+          <WordBox initWordData={el} key={el[0] + i} />
+        ))}
       </BodyStyled>
       <div>
         <AddCircleIcon
-          onClick={() => nav(`/word/add`)}
+          onClick={() => navigate(`/word/add`)}
           style={{
             fontSize: "4.2rem",
             position: "absolute",

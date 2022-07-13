@@ -6,10 +6,11 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const WordBox = () => {
-  const nav = useNavigate();
+const WordBox = ({ initWordData }) => {
+  const navigate = useNavigate();
+  const wordData = { ...initWordData };
 
-  const [checked, setChecked] = useState(false); // 체크박스 상태
+  const [checked, setChecked] = useState(wordData[5]); // 체크박스 상태
 
   // 체크박스 클릭 핸들러
   const checkboxOnClick = () => {
@@ -35,7 +36,11 @@ const WordBox = () => {
           </button>
           <button>
             <ModeEditIcon
-              onClick={() => nav(`/word/:id/edit`)}
+              onClick={() =>
+                navigate(`/word/${wordData.id}/edit/`, {
+                  state: wordData,
+                })
+              }
               style={{
                 fontSize: "1.8rem",
                 cursor: "pointer",
@@ -45,7 +50,7 @@ const WordBox = () => {
           </button>
           <button>
             <DeleteIcon
-              onClick={() => nav(`/word/add`)}
+              onClick={() => navigate(`/word/add`)}
               style={{
                 fontSize: "1.8rem",
                 cursor: "pointer",
@@ -55,12 +60,12 @@ const WordBox = () => {
           </button>
         </div>
         <div>
-          <p className="word">Apple</p>
-          <p className="pronunciation">[ˈæpl]</p>
+          <p className="word">{wordData[0]}</p>
+          <p className="pronunciation">{wordData[1]}</p>
         </div>
-        <p className="meaning">사과</p>
-        <p className="eg">an apple pie</p>
-        <p className="eg">사과 파이</p>
+        <p className="meaning">{wordData[2]}</p>
+        <p className="eg">{wordData[3]}</p>
+        <p className="eg">{wordData[4]}</p>
       </WordContainerDivStyled>
     </>
   );
