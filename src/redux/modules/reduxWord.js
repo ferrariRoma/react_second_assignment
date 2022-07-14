@@ -3,6 +3,7 @@ import { db } from "../../firebase";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -36,7 +37,9 @@ const wordReducer = (state = initWordData, action = {}) => {
       return new_Data;
     }
     case DELETE: {
-      return console.log("DELETE 리듀서 스위치 케이스 입니다.");
+      const delete_index = action.deleted_index;
+      const deletedWord = state.filter((el, i) => i !== delete_index);
+      return deletedWord;
     }
     case LOAD_FIRESTORE_DATA: {
       const loadedWords = [];
@@ -61,8 +64,8 @@ export const actionUpdateFn = (index, modifiedData) => {
   return { type: UPDATE, index, modifiedData };
 };
 
-export const actionDeleteFn = () => {
-  return console.log("actionDelete 입니다. 리듀서로 무엇을 보낼까요?");
+export const actionDeleteFn = (deleted_index) => {
+  return { type: DELETE, deleted_index };
 };
 // firestore action function
 export const loadDataFn = (firestoreData) => {
@@ -94,6 +97,17 @@ export const FBActionCreateFn = (state) => {
     const processNewWord = await getDoc(newWord);
     const newWord_Id = { id: processNewWord.id, ...processNewWord.data() };
     dispatch(actionCreateFn(newWord_Id));
+  };
+};
+
+export const FBActionDeleteFn = (state) => {
+  return async function (dispatch, getState) {
+    const docRef = doc(db, "dictionary", state);
+    await deleteDoc(docRef);
+
+    const dictionary = getState().reducer;
+    const index_word = dictionary.findIndex((el) => el.id === state);
+    dispatch(actionDeleteFn(index_word));
   };
 };
 
