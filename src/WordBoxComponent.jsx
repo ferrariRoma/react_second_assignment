@@ -7,7 +7,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 // redux and action Fn
 import { useDispatch } from "react-redux";
-import { FBActionUpdateFn } from "./redux/modules/reduxWord";
+import { FBActionUpdateFn, FBActionDeleteFn } from "./redux/modules/reduxWord";
 
 const WordBox = memo(({ initWordData }) => {
   const navigate = useNavigate();
@@ -24,6 +24,10 @@ const WordBox = memo(({ initWordData }) => {
     }
     dispatch(FBActionUpdateFn({ ...wordData, checked: false }));
     return setChecked(false);
+  };
+
+  const deleteBtnOnClick = () => {
+    dispatch(FBActionDeleteFn(wordData.id));
   };
 
   return (
@@ -56,7 +60,7 @@ const WordBox = memo(({ initWordData }) => {
           </button>
           <button>
             <DeleteIcon
-              onClick={() => navigate(`/word/add`)}
+              onClick={deleteBtnOnClick}
               style={{
                 fontSize: "1.8rem",
                 cursor: "pointer",
