@@ -22,9 +22,8 @@ const LOAD_FIRESTORE_DATA = "word/READ_DATA";
 const wordReducer = (state = initWordData, action = {}) => {
   switch (action.type) {
     case CREATE: {
-      // const newState = [...state, action.action];
-      // console.log(newState);
-      return state;
+      const newState = [...state, action.action];
+      return newState;
     }
     case READ: {
       return console.log("READ 리듀서 스위치 케이스 입니다.");
