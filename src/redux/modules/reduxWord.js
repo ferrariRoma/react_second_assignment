@@ -22,8 +22,8 @@ const LOAD_FIRESTORE_DATA = "word/READ_DATA";
 const wordReducer = (state = initWordData, action = {}) => {
   switch (action.type) {
     case CREATE: {
-      //   const newState = [...state, action.action];
-      //   console.log(newState);
+      // const newState = [...state, action.action];
+      // console.log(newState);
       return state;
     }
     case READ: {

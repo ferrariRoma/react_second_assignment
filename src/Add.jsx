@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { HeaderStyled, InputBodyStyled } from "./styleComponent";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FBActionCreateFn } from "./redux/modules/reduxWord";
 
