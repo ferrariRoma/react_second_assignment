@@ -32,7 +32,7 @@ const Home = () => {
           onClick={() => navigate(`/word/add`)}
           style={{
             fontSize: "4.2rem",
-            position: "absolute",
+            position: "fixed",
             bottom: "1.5rem",
             right: "1.5rem",
             cursor: "pointer",
