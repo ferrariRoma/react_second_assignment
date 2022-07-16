@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+# 영어 단어장
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 프로젝트 정보
 
-## Available Scripts
+- 개인(1인) 프로젝트
+- 일정 : 2022년 7월 9일 ~ 7월 14일
+- 사용 기술 및 라이브러리 : React, Redux, Styled-components, firebase, firestore, react-thunk
 
-In the project directory, you can run:
+## 트러블 슈팅
 
-### `yarn start`
+1. 반응형 UI 구현하기 :
+   Flex로 하려고 하다가 동일한 단어 블록이 이어지는 형식이고 블록의 너비도 창의 크기에 따라 유동적이었다.
+   그래서 이번에는 Flex보다는 Grid로 하는 것이 훨씬 더 간편하고 좋다는 생각이 들었다.
+   auto-fill와 minmax, 그리고 fr을 이용해서 간단하게 반응형 UI를 구현하였다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+또한 rem을 처음으로 써보았다. rem과 rm에 대한 내용은 알고 있었지만 한 번도 프로젝트에서는 사용해 본 적이 없는데
+실무에서는 rem을 바탕으로 대부분 진행된다고 들었다. 각 환경에 따라 정해진 기본 px을 기준으로 비례하기 때문에 rem을 통해서 만들면 훨씬 더 반응형에 적합하다고 했다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. 단어 중복추가 현상 해결 :
+   새 단어를 등록 할 때 같은 단어가 두 번 추가되는 현상이 있었다. firestore에는 정상적으로 등록이 됐는데 브라우저에서는 새로고침 전까지 중첩된 등록이 보이는 현상이 었다.
+   console을 하나하나 찍어가면서 확인해 본 결과 아래와 같은 프로세스로 단어가 추가가 되면서 문제가 생긴 것이었다.
+   새 단어 등록 👉 firestore에 추가 👉 Home으로 오면서 dispatch(FBActionFn())를 통해 추가된 state를 리덕스에 최신화 👉 단어등록 프로세스에서 리덕스에 또 추가 👉 같은 단어가 두 번 등록된 '것'처럼 보임
 
-### `yarn test`
+   그래서 Home.jsx에 있던 dispatch를 App.jsx로 옮겨주면서 최초 랜더링 될 때 firestore에서 데이터를 가져와서 reducer의 초깃값을 설정해주고, 그 뒤에는 리덕스의 변화로만 state를 관리할 수 있도록 했다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+3. 단어 등록 및 수정 과정에서 유효성 검사 :
+   원래는 ref를 이용해서 Input의 value를 모두 확인한 후 빈 칸이 아니면(첫 번째 if) checked state를 수정했고 checked state가 true이면(두 번째 if) 수정이나 추가 액션 함수를 호출했다. 하지만 잘 작동되지 않았다. 무슨 문제인지 알 수가 없었는데, 이 부분에서는 if문 두 개를 통합하면서 해결이 되었다.
+   어차피 첫 번째 if문에서 모든 칸이 빈 칸이 아니라면 그냥 바로 액션 함수를 호출하는 방식으로 바꾸니 불필요한 state도 줄게 되었다.
